@@ -33,7 +33,7 @@ export class AuthController {
     private readonly jwtService: JwtService,
   ) {}
 
-  @Post('register')
+  @Post('/register')
   @UsePipes(ValidationPipe)
   async registerAccount(
     @Req() req: Request,
@@ -42,13 +42,13 @@ export class AuthController {
     return await this.authService.registerNewUser(userRegisterDTO);
   }
 
-  @Post('login')
+  @Post('/login')
   @UsePipes(ValidationPipe)
   async authorize(@Body() userLogin: UserLoginDTO): Promise<any> {
     return await this.authService.login(userLogin);
   }
 
-  @Post('refresh-token')
+  @Post('/refresh-token')
   async refreshToken(@Req() req: Request, @Res() res: Response): Promise<any> {
     const refreshTokenReq = req.headers.authorization.split(' ')[1];
     let user;

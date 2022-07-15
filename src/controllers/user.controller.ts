@@ -29,7 +29,7 @@ export class UserController {
 
   @Roles(RoleType.ADMIN)
   @UseGuards(AuthGuard, RolesGuard)
-  @Get('/get-all')
+  @Get('/get-all-user')
   async getAllCategories(): Promise<UserDTO[]> {
     const users = await this.userService.findAll();
 
@@ -38,7 +38,7 @@ export class UserController {
 
   @Roles(RoleType.ADMIN)
   @UseGuards(AuthGuard, RolesGuard)
-  @Get('/get-by-id/:id')
+  @Get('/get-user-by-id/:id')
   async getUserById(@Param('id', ParseIntPipe) id: number): Promise<UserDTO> {
     const userFound = await this.userService.findById(id);
 
@@ -52,7 +52,7 @@ export class UserController {
   @Roles(RoleType.ADMIN)
   @UseGuards(AuthGuard, RolesGuard)
   @UsePipes(ValidationPipe)
-  @Post('/create')
+  @Post('/create-user')
   async createUser(
     @Req() req: Request,
     @Body() userDTO: UserDTO,
@@ -67,7 +67,7 @@ export class UserController {
   @Roles(RoleType.ADMIN)
   @UseGuards(AuthGuard, RolesGuard)
   @UsePipes(ValidationPipe)
-  @Put('/update')
+  @Put('/update-user')
   async updateUser(
     @Req() req: Request,
     @Body() userDTO: UserDTO,
@@ -88,7 +88,7 @@ export class UserController {
 
   @Roles(RoleType.ADMIN)
   @UseGuards(AuthGuard, RolesGuard)
-  @Delete('/delete/:id')
+  @Delete('/delete-user/:id')
   async deleteUser(@Param('id') id: number): Promise<UserDTO> {
     const userToDelete = await this.userService.findById(id);
 

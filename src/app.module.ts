@@ -1,7 +1,10 @@
+/* eslint-disable prettier/prettier */
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
+import { Movie } from './entities/movie.entity';
 import { User } from './entities/user.entity';
 import { AuthModule } from './modules/auth.module';
+import { MovieModule } from './modules/movie.module';
 import { UserModule } from './modules/user.module';
 
 @Module({
@@ -17,10 +20,11 @@ import { UserModule } from './modules/user.module';
       logging: false,
       // logging: true,
       synchronize: true,
-      entities: [User],
+      entities: [User, Movie],
     }),
     UserModule,
     AuthModule,
+    MovieModule
   ],
   controllers: [],
   providers: [],
