@@ -13,14 +13,29 @@ export class MovieService {
     @InjectRepository(Movie) private movieRepository: Repository<Movie>,
   ) {}
 
-  async findAll(): Promise<any[] | undefined> {
-    const movies = await this.movieRepository.createQueryBuilder("movie")
-    .select("movie.id, movie.title, movie.description, movie.createdBy, movie.createdDate")
-    .addSelect(`COUNT(case vote."status" when 'LIKE' then 1 else null end)`, "totalLike")
-    .addSelect(`COUNT(case vote."status" when 'DISLIKE' then 1 else null end)`, "totalDisLike")
-    .innerJoin(Vote, "vote", "movie.id = vote.movieId")
-    .groupBy("movie.id")
-    .getRawMany();
+  async findAll(
+    pageIndex: number,
+    pageSize: number,
+  ): Promise<any[] | undefined> {
+    const skip = (pageIndex - 1) * pageSize;
+    const movies = await this.movieRepository
+      .createQueryBuilder('movie')
+      .select(
+        'movie.id, movie.title, movie.description, movie.createdBy, movie.createdDate',
+      )
+      .addSelect(
+        `COUNT(case vote."status" when 'LIKE' then 1 else null end)`,
+        'totalLike',
+      )
+      .addSelect(
+        `COUNT(case vote."status" when 'DISLIKE' then 1 else null end)`,
+        'totalDisLike',
+      )
+      .innerJoin(Vote, 'vote', 'movie.id = vote.movieId')
+      .groupBy('movie.id')
+      .limit(pageSize)
+      .offset(skip)
+      .getRawMany();
 
     // const moviesDTO: MovieDTO[] = [];
 
@@ -56,7 +71,7 @@ export class MovieService {
       where: {
         id: id,
       },
-      relations: ['sharedBy']
+      relations: ['sharedBy'],
     });
 
     return MovieMapper.fromEntityToDTO(movie);
@@ -81,5 +96,58 @@ export class MovieService {
     const movieDeleted = await this.movieRepository.remove(movieToDelete);
 
     return MovieMapper.fromEntityToDTO(movieDeleted);
+  }
+
+  async findMoviesShared(userId: number): Promise<MovieDTO[] | undefined> {
+    if (!userId) {
+      return [];
+    }
+
+    const moviesShared = await this.movieRepository
+      .createQueryBuilder('movie')
+      .select(
+        'movie.id, movie.title, movie.description, movie.createdBy, movie.createdDate',
+      )
+      .addSelect(
+        `COUNT(case vote."status" when 'LIKE' then 1 else null end)`,
+        'totalLike',
+      )
+      .addSelect(
+        `COUNT(case vote."status" when 'DISLIKE' then 1 else null end)`,
+        'totalDisLike',
+      )
+      .innerJoin(Vote, 'vote', 'movie.id = vote.movieId')
+      .where(`movie."sharedById" = ${userId}`)
+      .groupBy('movie.id')
+      .getRawMany();
+
+    return moviesShared;
+  }
+
+  async findMoviesVoted(
+    userId: number,
+    status: string,
+  ): Promise<MovieDTO[] | undefined> {
+    const moviesVoted = await this.movieRepository
+      .createQueryBuilder('movie')
+      .select(
+        'movie.id, movie.title, movie.description, movie.createdBy, movie.createdDate',
+      )
+      .addSelect(
+        `COUNT(case vote."status" when 'LIKE' then 1 else null end)`,
+        'totalLike',
+      )
+      .addSelect(
+        `COUNT(case vote."status" when 'DISLIKE' then 1 else null end)`,
+        'totalDisLike',
+      )
+      .innerJoin(Vote, 'vote', 'movie.id = vote.movieId')
+      .where(
+        `movie.id in (SELECT vote."movieId" from vote where vote."userId" = ${userId} and status = '${status}')`,
+      )
+      .groupBy('movie.id')
+      .getRawMany();
+
+    return moviesVoted;
   }
 }
