@@ -27,8 +27,8 @@ import { AuthGuard } from '../security/guards/auth.guard';
 export class MovieController {
   constructor(private readonly movieService: MovieService) {}
 
-  @Get('/get-all-movie')
-  async getAllCategories(@Req() req: Request): Promise<MovieDTO[]> {
+  @Get('/get-all-movies')
+  async getAllMovies(@Req() req: Request): Promise<MovieDTO[]> {
     const { pageIndex, pageSize } = req.query;
     const movies = await this.movieService.findAll(
       Number(pageIndex),
