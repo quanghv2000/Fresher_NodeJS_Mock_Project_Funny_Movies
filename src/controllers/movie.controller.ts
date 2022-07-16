@@ -28,8 +28,12 @@ export class MovieController {
   constructor(private readonly movieService: MovieService) {}
 
   @Get('/get-all-movie')
-  async getAllCategories(): Promise<MovieDTO[]> {
-    const movies = await this.movieService.findAll();
+  async getAllCategories(@Req() req: Request): Promise<MovieDTO[]> {
+    const { pageIndex, pageSize } = req.query;
+    const movies = await this.movieService.findAll(
+      Number(pageIndex),
+      Number(pageSize),
+    );
 
     return movies;
   }
@@ -121,5 +125,26 @@ export class MovieController {
     const movieCreated = await this.movieService.save(movieDTO);
 
     return movieCreated;
+  }
+
+  @Roles(RoleType.USER)
+  @UseGuards(AuthGuard, RolesGuard)
+  @Get('/get-movies-shared')
+  async getMoviesShared(@Req() req: Request): Promise<MovieDTO[]> {
+    const userReq: any = req.user;
+    const moviesShared = await this.movieService.findMoviesShared(userReq.id);
+
+    return moviesShared;
+  }
+
+  @Roles(RoleType.USER)
+  @UseGuards(AuthGuard, RolesGuard)
+  @Get('/get-movies-voted')
+  async getMoviesVoted(@Req() req: Request): Promise<MovieDTO[]> {
+    const userReq: any = req.user;
+    const status = String(req.query.status);
+    const moviesVoted = await this.movieService.findMoviesVoted(userReq.id, status);
+
+    return moviesVoted;
   }
 }
