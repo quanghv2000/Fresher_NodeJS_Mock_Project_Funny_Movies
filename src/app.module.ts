@@ -3,9 +3,11 @@ import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { Movie } from './entities/movie.entity';
 import { User } from './entities/user.entity';
+import { Vote } from './entities/vote.entity';
 import { AuthModule } from './modules/auth.module';
 import { MovieModule } from './modules/movie.module';
 import { UserModule } from './modules/user.module';
+import { VoteModule } from './modules/vote.module';
 
 @Module({
   imports: [
@@ -17,14 +19,15 @@ import { UserModule } from './modules/user.module';
       port: 5433,
       username: 'postgres',
       password: '123456789',
-      logging: false,
-      // logging: true,
+      // logging: false,
+      logging: true,
       synchronize: true,
-      entities: [User, Movie],
+      entities: [User, Movie, Vote],
     }),
     UserModule,
     AuthModule,
-    MovieModule
+    MovieModule,
+    VoteModule,
   ],
   controllers: [],
   providers: [],
