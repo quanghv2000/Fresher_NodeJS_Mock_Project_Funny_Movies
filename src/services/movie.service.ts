@@ -2,9 +2,10 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Movie } from '../entities/movie.entity';
-import { Repository } from 'typeorm';
+import { getRepository, Repository } from 'typeorm';
 import { MovieDTO } from './dtos/movie.dto';
 import { MovieMapper } from './mappers/movie.mapper';
+import { Vote } from 'src/entities/vote.entity';
 
 @Injectable()
 export class MovieService {
@@ -12,16 +13,24 @@ export class MovieService {
     @InjectRepository(Movie) private movieRepository: Repository<Movie>,
   ) {}
 
-  async findAll(): Promise<MovieDTO[] | undefined> {
-    const movies = await this.movieRepository.find();
+  async findAll(): Promise<any[] | undefined> {
+    const movies = await this.movieRepository.createQueryBuilder("movie")
+    .select("movie.id, movie.title, movie.description, movie.createdBy, movie.createdDate")
+    .addSelect(`COUNT(case vote."status" when 'LIKE' then 1 else null end)`, "totalLike")
+    .addSelect(`COUNT(case vote."status" when 'DISLIKE' then 1 else null end)`, "totalDisLike")
+    .innerJoin(Vote, "vote", "movie.id = vote.movieId")
+    .groupBy("movie.id")
+    .getRawMany();
 
-    const moviesDTO: MovieDTO[] = [];
+    // const moviesDTO: MovieDTO[] = [];
 
-    movies.forEach((movie) => {
-      moviesDTO.push(MovieMapper.fromEntityToDTO(movie));
-    });
+    // movies.forEach((movie) => {
+    //   moviesDTO.push(MovieMapper.fromEntityToDTO(movie));
+    // });
 
-    return moviesDTO;
+    // return moviesDTO;
+
+    return movies;
   }
 
   async findById(id: number): Promise<MovieDTO | undefined> {

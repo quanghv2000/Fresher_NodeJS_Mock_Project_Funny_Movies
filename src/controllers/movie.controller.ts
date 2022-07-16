@@ -28,7 +28,9 @@ export class MovieController {
   constructor(private readonly movieService: MovieService) {}
 
   @Get('/get-all-movie')
-  async getAllCategories(): Promise<MovieDTO[]> {
+  async getAllCategories(@Req() req: Request): Promise<MovieDTO[]> {
+    const {pageIndex, pageSize} = req.query;
+    console.log(pageIndex, pageSize);
     const movies = await this.movieService.findAll();
 
     return movies;
