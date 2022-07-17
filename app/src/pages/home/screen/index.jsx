@@ -1,27 +1,82 @@
 import {
+  AudioOutlined,
   ClockCircleOutlined,
   HistoryOutlined,
   HomeOutlined,
   LikeOutlined,
+  LogoutOutlined,
   MenuFoldOutlined,
   MenuUnfoldOutlined,
+  SearchOutlined,
   UploadOutlined,
   UserOutlined,
   VideoCameraOutlined,
   YoutubeOutlined,
 } from "@ant-design/icons";
-import { Col, Layout, Menu, Row } from "antd";
+import {
+  Avatar,
+  Button,
+  Col,
+  Dropdown,
+  Form,
+  Input,
+  Layout,
+  Menu,
+  Row,
+} from "antd";
 import React, { useState } from "react";
 import youtobe_logo from "../../../assets/images/youtobe_logo.png";
 import logo from "../../../assets/images/logo.png";
 import "./styles.css";
 import YouTube from "react-youtube";
 import { Link } from "react-router-dom";
+import Search from "antd/lib/transfer/search";
 const { Header, Sider, Content } = Layout;
 
 export const Home = () => {
   const [collapsed, setCollapsed] = useState(false);
-  const videos = [1, 2, 3, 4, 5];
+  const videos = [
+    "b7DxNXHmxmY",
+    "L0_hPoL0yM0",
+    "sH_tyFTpvUI",
+    "KePu2GTZlCE",
+    "n5cNKv_xLqE",
+    "121SP-v2mTo",
+    "7gz-9C_BHdU",
+    "D4mBl0n1DGY",
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8,
+    9,
+    10,
+  ];
+  const menu = (
+    <Menu>
+      <Menu.Item
+        className="menu-signed"
+        onClick={() => {
+          alert("logout");
+        }}
+        style={{ fontWeight: 500 }}
+      >
+        <LogoutOutlined style={{ marginRight: 6 }} /> Đăng xuất
+      </Menu.Item>
+    </Menu>
+  );
+  const suffix = (
+    <AudioOutlined
+      style={{
+        fontSize: 16,
+        color: "#1890ff",
+      }}
+    />
+  );
+
   const opts = {
     width: "100%",
     height: "100%",
@@ -29,6 +84,14 @@ export const Home = () => {
       // https://developers.google.com/youtube/player_parameters
       // autoplay: 1,
     },
+  };
+
+  const onFinish = (search) => {
+    console.log("Success:", search);
+  };
+
+  const onFinishFailed = (errorInfo) => {
+    console.log("Failed:", errorInfo);
   };
   return (
     <Layout>
@@ -78,7 +141,14 @@ export const Home = () => {
         />
       </Sider>
       <Layout className="site-layout">
-        <Header className="site-layout-background bg-white p-0">
+        <Header
+          className="site-layout-background bg-white p-0"
+          style={{
+            display: "flex",
+            textAlign: "center",
+            justifyContent: "space-between",
+          }}
+        >
           {React.createElement(
             collapsed ? MenuUnfoldOutlined : MenuFoldOutlined,
             {
@@ -86,6 +156,55 @@ export const Home = () => {
               onClick: () => setCollapsed(!collapsed),
             }
           )}
+          <div>
+            <Form
+              name="basic"
+              initialValues={{
+                remember: true,
+              }}
+              onFinish={onFinish}
+              onFinishFailed={onFinishFailed}
+              autoComplete="off"
+              compact
+              style={{display: 'flex', marginTop: 16}}
+            >
+              <Form.Item name="search">
+                <Input
+                  style={{
+                    textAlign: "left",
+                    width: 300,
+                  }}
+                  placeholder="Tìm kiếm"
+                />
+              </Form.Item>
+              <Form.Item>
+                <Button
+                  type="default"
+                  style={{ backgroundColor: "#F8F8F8" }}
+                  htmlType="submit"
+                >
+                  <SearchOutlined />
+                </Button>
+              </Form.Item>
+            </Form>
+          </div>
+          <Dropdown
+            overlay={menu}
+            placement="bottom"
+            style={{ cursor: "pointer", paddingTop: 20, marginRight: 10 }}
+          >
+            <div style={{ cursor: "pointer" }}>
+              <span
+                style={{ marginRight: 8, color: "#606060", fontWeight: 500 }}
+              >
+                Quang Hà Văn
+              </span>
+              <Avatar
+                className="mr-20"
+                src="https://joeschmoe.io/api/v1/random"
+              />
+            </div>
+          </Dropdown>
         </Header>
         <Content
           className="site-layout-background bg-white"
@@ -109,10 +228,10 @@ export const Home = () => {
                   >
                     <Link to="/video/1">
                       <YouTube
-                        videoId="6CdzVGkrL5g"
+                        videoId={item}
                         opts={opts}
                         onReady={() => {
-                          console.log("to")
+                          console.log("to");
                         }}
                       />
                       <div
