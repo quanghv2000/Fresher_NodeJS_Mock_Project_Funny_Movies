@@ -1,11 +1,6 @@
-import {
-  MenuFoldOutlined,
-  MenuUnfoldOutlined,
-} from "@ant-design/icons";
-import {
-  Layout,
-} from "antd";
-import React, { useEffect, useState } from "react";
+import { MenuFoldOutlined, MenuUnfoldOutlined } from "@ant-design/icons";
+import { Layout } from "antd";
+import React, { useState } from "react";
 import youtobe_logo from "../../assets/images/youtobe_logo.png";
 import logo from "../../assets/images/logo.png";
 import { Link } from "react-router-dom";
