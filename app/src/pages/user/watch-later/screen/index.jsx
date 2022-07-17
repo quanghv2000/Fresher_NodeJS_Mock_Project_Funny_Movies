@@ -1,10 +1,11 @@
 import React from 'react'
 import { UserLayout } from '../../../../components/user-layout'
+import { VideoList } from '../../../../components/video-list'
 
 export const WatchLater = () => {
   return (
     <div>
-      <UserLayout content={"Xem sau"} />
+      <UserLayout content={<VideoList />} />
     </div>
   )
 }

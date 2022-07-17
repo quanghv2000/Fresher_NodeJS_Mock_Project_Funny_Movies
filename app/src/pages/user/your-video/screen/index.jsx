@@ -1,10 +1,11 @@
 import React from 'react'
 import { UserLayout } from '../../../../components/user-layout'
+import { VideoList } from '../../../../components/video-list'
 
 export const YourVideo = () => {
   return (
     <div>
-      <UserLayout content={"Video của bạn"} />
+      <UserLayout content={<VideoList />} />
     </div>
   )
 }

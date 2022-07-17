@@ -1,27 +1,25 @@
-import {
-  Col,
-  Row,
-} from "antd";
+import { Col, Row } from "antd";
 import React from "react";
 import "./styles.css";
 import YouTube from "react-youtube";
 import { Link } from "react-router-dom";
 
-export const HomeContent = () => {
-  const videos = [
-    "b7DxNXHmxmY",
-    "L0_hPoL0yM0",
-    "sH_tyFTpvUI",
-    "KePu2GTZlCE",
-    "n5cNKv_xLqE",
-    "121SP-v2mTo",
-    "7gz-9C_BHdU",
-    "D4mBl0n1DGY",
-    "oQb6BvAJmQI",
-    "1g52Rlj39OY",
-    "ft-9CrKw258",
-    "xwHC4cfn6UY",
-  ];
+export const VideoList = (props) => {
+  const videos = props.videos;
+
+  const convertNumOfView = function (number) {
+    const units = ["", "N", "Tr", "T"];
+    // zeroes: số chữ số 0 đằng sau tính đến hàng tỷ: 0,1,2 | 3,4,5 | 6,7,8 | 9
+    const zeroes = Math.floor((number / 1.0e1).toFixed(0).toString().length);
+    // unit: đơn vị: ["", "N", "Tr", "T"] - lấy zeroes / 3
+    // 0,1,2 (0 - "") | 3,4,5 (1 - "N") | 6,7,8 (2 - Tr) | 9 (3 - T)
+    var unit = units[Math.floor(zeroes / 3)];
+    // exponent: tính số mũ - lấy (zeroes / 3) * 3 (hàng tỉ có 9 số 0) => * 3
+    var exponent = Math.floor(zeroes / 3) * 3;
+
+    const numOfView = (number / Math.pow(10, exponent)).toFixed(1) + " " + unit;
+    return numOfView;
+  }
 
   const opts = {
     width: "100%",
@@ -36,7 +34,7 @@ export const HomeContent = () => {
     <>
       <div>
         <Row>
-          {videos.map((item, index) => {
+          {videos?.map((video, index) => {
             return (
               <Col
                 xs={24}
@@ -46,9 +44,9 @@ export const HomeContent = () => {
                 key={index}
                 style={{ padding: "10px 10px 20px" }}
               >
-                <Link to="/video/1">
+                <Link to={`/video/${video?.id}`}>
                   <YouTube
-                    videoId={item}
+                    videoId={video?.url?.split("watch?v=")[1]}
                     opts={opts}
                     onReady={() => {
                       console.log("to");
@@ -82,12 +80,12 @@ export const HomeContent = () => {
                           fontSize: 14,
                         }}
                       >
-                        A Barcelona 2008-09 Tiki-Taka Masterclass
+                        {video.title}
                       </p>
                       <div style={{ fontSize: 12, color: "#606060" }}>
-                        <p style={{ margin: 0 }}>Barca Studio</p>
+                        <p style={{ margin: 0 }}>{video?.sharedBy?.name}</p>
                         <p style={{ margin: 0 }}>
-                          4,6 Tr lượt xem • 1 năm trước
+                          {convertNumOfView(video.numOfView)} lượt xem • 1 năm trước
                         </p>
                       </div>
                     </div>
