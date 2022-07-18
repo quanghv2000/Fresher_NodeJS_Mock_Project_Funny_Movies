@@ -56,7 +56,7 @@ export const MenuSider = () => {
           return (
             <Menu.Item
               key={menuItem.key}
-              icon={menuItem.icon}
+              icon={menuItem?.icon}
               className={
                 location.pathname === menuItem?.path
                   ? "active__menu--sider"
@@ -64,14 +64,14 @@ export const MenuSider = () => {
               }
             >
               <Link
-                to={menuItem.path}
+                to={menuItem?.path}
                 className={
                   location.pathname === menuItem?.path
                     ? "active__menu--sider-link"
                     : ""
                 }
               >
-                {menuItem.label}
+                {menuItem?.label}
               </Link>
             </Menu.Item>
           );

@@ -46,7 +46,7 @@ export const Navbar = () => {
           onFinish={onFinish}
           onFinishFailed={onFinishFailed}
           autoComplete="off"
-          compact
+          // compact
           style={{ display: "flex", marginTop: 16 }}
         >
           <Form.Item name="search">
