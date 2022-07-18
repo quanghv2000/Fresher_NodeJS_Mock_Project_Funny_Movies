@@ -1,7 +1,9 @@
 import { LockOutlined, MailOutlined } from "@ant-design/icons";
 import { Button, Checkbox, Form, Input } from "antd";
 import React from "react";
+import { Link } from "react-router-dom";
 import google_logo from "../../../../assets/images/google.png";
+import youtobe_logo from "../../../../assets/images/youtobe_logo.png";
 
 export const Login = () => {
   const onFinish = (values) => {
@@ -14,9 +16,18 @@ export const Login = () => {
         backgroundColor: "#F5F5F5",
         width: "100vw",
         height: "100vh",
-        paddingTop: 100,
+        paddingTop: 40,
       }}
     >
+      <Link to="/home">
+        <div style={{ textAlign: "center", cursor: 'pointer' }}>
+          <img
+            src={youtobe_logo}
+            alt="youtobe_logo"
+            style={{ width: "10%", padding: "40px 0px" }}
+          />
+        </div>
+      </Link>
       <div
         style={{
           width: 380,
@@ -87,7 +98,12 @@ export const Login = () => {
                 type="primary"
                 htmlType="submit"
                 className="login-form-button"
-                style={{ width: "300px", height: "38px", fontWeight: 500, fontSize: 16 }}
+                style={{
+                  width: "300px",
+                  height: "38px",
+                  fontWeight: 500,
+                  fontSize: 16,
+                }}
               >
                 Đăng nhập
               </Button>
@@ -102,13 +118,13 @@ export const Login = () => {
               marginTop: "-20px",
               backgroundColor: "#F5F5F5",
               marginBottom: "20px",
-              color: '#0000008A'
+              color: "#0000008A",
             }}
           >
             <img
               src={google_logo}
               alt="google_logo"
-              style={{width: '22px', height: '22px', marginRight: '20px'}}
+              style={{ width: "22px", height: "22px", marginRight: "20px" }}
             />
             Đăng nhập với Google
           </Button>

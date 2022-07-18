@@ -6,6 +6,7 @@ import { History } from "./pages/user/history/screen/index";
 import { YourVideo } from "./pages/user/your-video/screen/index";
 import { WatchLater } from "./pages/user/watch-later/screen/index";
 import { LikedVideo } from "./pages/user/liked-video/screen/index";
+import { VideoDetail } from "./pages/user/video-detail/screen";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 
 function App() {
@@ -21,6 +22,7 @@ function App() {
           <Route path="/your-video" exact element={<YourVideo />} />
           <Route path="/watch-later" exact element={<WatchLater />} />
           <Route path="/liked-video" exact element={<LikedVideo />} />
+          <Route path="/video/:id" exact element={<VideoDetail />} />
           <Route index exact element={<Home />} />
         </Route>
       </Routes>

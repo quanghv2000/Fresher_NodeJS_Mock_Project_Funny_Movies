@@ -1,7 +1,9 @@
 import { LockOutlined, MailOutlined, UserOutlined } from "@ant-design/icons";
 import { Button, Form, Input } from "antd";
 import React from "react";
+import { Link } from "react-router-dom";
 import google_logo from "../../../../assets/images/google.png";
+import youtobe_logo from "../../../../assets/images/youtobe_logo.png";
 
 export const Register = () => {
   const onFinish = (values) => {
@@ -14,9 +16,18 @@ export const Register = () => {
         backgroundColor: "#F5F5F5",
         width: "100vw",
         height: "100vh",
-        paddingTop: 100,
+        paddingTop: 40,
       }}
     >
+      <Link to="/home">
+        <div style={{ textAlign: "center", cursor: 'pointer' }}>
+          <img
+            src={youtobe_logo}
+            alt="youtobe_logo"
+            style={{ width: "10%", padding: "40px 0px" }}
+          />
+        </div>
+      </Link>
       <div
         style={{
           width: 380,

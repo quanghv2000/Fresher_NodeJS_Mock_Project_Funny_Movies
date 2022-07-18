@@ -1,8 +1,8 @@
 import { Col, Row } from "antd";
 import React from "react";
-import "./styles.css";
 import YouTube from "react-youtube";
 import { Link } from "react-router-dom";
+import "./styles.css";
 
 export const VideoList = (props) => {
   const videos = props.videos;
@@ -19,15 +19,6 @@ export const VideoList = (props) => {
 
     const numOfView = (number / Math.pow(10, exponent)).toFixed(1) + " " + unit;
     return numOfView;
-  }
-
-  const opts = {
-    width: "100%",
-    height: "100%",
-    playerVars: {
-      // https://developers.google.com/youtube/player_parameters
-      // autoplay: 1,
-    },
   };
 
   return (
@@ -45,12 +36,15 @@ export const VideoList = (props) => {
                 style={{ padding: "10px 10px 20px" }}
               >
                 <Link to={`/video/${video?.id}`}>
-                  <YouTube
+                  {/* <YouTube
                     videoId={video?.url?.split("watch?v=")[1]}
                     opts={opts}
-                    onReady={() => {
-                      console.log("to");
-                    }}
+                    style={{ backgroundColor: "#F5F5F5" }}
+                  /> */}
+                  <img
+                    src={`http://img.youtube.com/vi/${video.videoId}/maxresdefault.jpg`}
+                    alt=""
+                    style={{ backgroundColor: "#F5F5F5", width: "100%", maxHeight: '165px' }}
                   />
                   <div
                     style={{
@@ -61,13 +55,14 @@ export const VideoList = (props) => {
                     <div>
                       {" "}
                       <img
-                        src="https://picsum.photos/36/36"
+                        src={video?.sharedBy?.imageUrl}
                         alt="avatar"
                         style={{
                           width: 36,
                           height: 36,
                           borderRadius: "50%",
                           marginRight: 12,
+                          backgroundColor: "#F5F5F5",
                         }}
                       />
                     </div>
@@ -78,6 +73,7 @@ export const VideoList = (props) => {
                           color: "#030303",
                           fontWeight: 500,
                           fontSize: 14,
+                          paddingRight: '12px'
                         }}
                       >
                         {video.title}
@@ -85,7 +81,8 @@ export const VideoList = (props) => {
                       <div style={{ fontSize: 12, color: "#606060" }}>
                         <p style={{ margin: 0 }}>{video?.sharedBy?.name}</p>
                         <p style={{ margin: 0 }}>
-                          {convertNumOfView(video.numOfView)} lượt xem • 1 năm trước
+                          {convertNumOfView(video.numOfView)} lượt xem • 1 năm
+                          trước
                         </p>
                       </div>
                     </div>

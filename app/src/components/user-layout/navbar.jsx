@@ -1,25 +1,21 @@
 import {
   LogoutOutlined,
   SearchOutlined,
+  UserOutlined,
 } from "@ant-design/icons";
-import {
-  Avatar,
-  Button,
-  Dropdown,
-  Form,
-  Input,
-  Menu,
-} from "antd";
-import React from "react";
+import { Avatar, Button, Dropdown, Form, Input, Menu } from "antd";
+import React, { useState } from "react";
+import { Link } from "react-router-dom";
 import "./styles.css";
 
 export const Navbar = () => {
+  const [isLogged, setIsLogged] = useState(false);
   const menu = (
     <Menu>
       <Menu.Item
         className="menu-signed"
         onClick={() => {
-          alert("logout");
+          setIsLogged(false);
         }}
         style={{ fontWeight: 500 }}
       >
@@ -69,18 +65,32 @@ export const Navbar = () => {
           </Form.Item>
         </Form>
       </div>
-      <Dropdown
-        overlay={menu}
-        placement="bottom"
-        style={{ cursor: "pointer", paddingTop: 20, marginRight: 10 }}
-      >
-        <div style={{ cursor: "pointer" }}>
-          <span style={{ marginRight: 8, color: "#606060", fontWeight: 500 }}>
-            Quang Hà Văn
-          </span>
-          <Avatar className="mr-20" src="https://joeschmoe.io/api/v1/random" />
-        </div>
-      </Dropdown>
+      <div>
+        {isLogged ? (
+          <Dropdown overlay={menu} placement="bottom">
+            <div style={{ cursor: "pointer" }}>
+              <span
+                style={{ marginRight: 8, color: "#606060", fontWeight: 500 }}
+              >
+                Quang Hà Văn
+              </span>
+              <Avatar
+                className="mr-20"
+                src="https://joeschmoe.io/api/v1/random"
+              />
+            </div>
+          </Dropdown>
+        ) : (
+          <div>
+            <Link to="/login">
+              <Button>
+                <UserOutlined />
+                Đăng nhập
+              </Button>
+            </Link>
+          </div>
+        )}
+      </div>
     </>
   );
 };
